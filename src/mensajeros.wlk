@@ -17,8 +17,35 @@ object roberto {
 	}
 }
 
-// object neo {}
-// object chuck 
+object neo {
+	var peso = 0
+	// no hay una var de transporte porque neo vuela
+	var llamo = false
+	// la capacidad de neo para llamar se intercala dependiendo de si ya hizo una llamada antes
+	method peso() = peso
+
+	method tieneCredito() {
+		llamo = not(llamo)
+		return llamo
+	}
+}
+
+object chuck {
+	var peso = 900
+	var transporte = camion
+
+	method peso() {
+		return peso + transporte.peso()
+	}
+
+	method transporte(vehiculo) {
+		transporte = vehiculo
+	}
+
+	method tieneCredito() {
+		return true
+	}
+}
 
 object camion {
 	var acoplados = 2
@@ -45,7 +72,13 @@ object brooklyn {
 		return mensajero.peso() < 1000
 	}
 }
-// object matrix
+
+object matrix {
+
+	method dejarPasar(mensajero) {
+		return mensajero.tieneCredito()
+	}
+}
 
 object paquete {
 	var pago = false
