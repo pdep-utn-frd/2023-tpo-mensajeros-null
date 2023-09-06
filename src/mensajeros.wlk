@@ -20,12 +20,15 @@ object roberto {
 object neo {
 	var peso = 0
 	// no hay una var de transporte porque neo vuela
-	var llamo = false
+	var llamo = true
 	// la capacidad de neo para llamar se intercala dependiendo de si ya hizo una llamada antes
 	method peso() = peso
 
+	method llamar(){
+		llamo=!llamo
+		
+	}
 	method tieneCredito() {
-		llamo = not(llamo)
 		return llamo
 	}
 }
@@ -83,6 +86,7 @@ object matrix {
 object paquete {
 	var pago = false
 	var destino = brooklyn
+	var precio = 50
 
 	method pagar() {
 		pago = true
@@ -98,5 +102,50 @@ object paquete {
 
 	method puedeSerEntregadoPor(mensajero) {
 		return destino.dejarPasar(mensajero) and self.estaPago()
+	}
+}
+object paquetito {
+	var pago = true
+	var destino = brooklyn
+
+
+	method estaPago() {
+		return pago
+	}
+
+	method destino(lugar) {
+		destino = lugar
+	}
+
+	method puedeSerEntregadoPor(mensajero) {
+		return true
+	}
+}
+
+object paquetonViajero {
+	var pago = false
+	var destino = []
+	var precio = 50
+
+	method pagar(cantidad) {
+		precio = precio - cantidad
+	}
+	
+	method precio() {
+		return precio
+}
+	method estaPago() {
+		return precio <= 0
+	}
+	method precioTotal(){
+		precio = destino.size() * 50
+		return precio
+	}
+	method destino(lugar) {
+		destino.add(lugar)
+	}
+
+	method puedeSerEntregadoPor(mensajero) {
+		return destino.all({x=>x.dejarPasar(mensajero)}) and self.estaPago()
 	}
 }

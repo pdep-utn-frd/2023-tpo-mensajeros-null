@@ -3,6 +3,7 @@ import mensajeros.*
 object mensajeria {
 
     const mensajeros = new Set()
+    var lista = []
 
 	method contratar(persona) {
         mensajeros.add(persona)
@@ -28,6 +29,14 @@ object mensajeria {
     }
   	method mensajeriaGrande(){
   		return mensajeros.size()>2
+  	}
+  	method puedePrimerEmpleado(mensaje){
+  		lista=mensajeros.asList()
+  		return mensaje.puedeSerEntregadoPor(lista.first())
+  	}
+  	method pesoDelUltimoEmpleado(){
+  		lista=mensajeros.asList()
+  		return lista.last().peso()
   	}
     method tieneSobrepeso() {
 
