@@ -61,7 +61,7 @@ test "Si neo es empleado, Hay un mensajero que puede enviar el paquete" {
 	self.destinoPago()
 	assert.that(mensajeria.mensajeros().contains(neo))
 }
-
+//Tests parte 1
 test "Roberto puede llevar un paquete que está pago en un camión que tiene un acoplado" {
     mensajeria.contratar(roberto)
     camion.acoplados(1)
@@ -73,8 +73,45 @@ test "Neo con crédito no puede llevar un paquete que no está pago a la matrix"
     mensajeria.contratar(neo)
     assert.that(neo.tieneCredito())
 	paquete.destino(matrix)
-    // Verifica que neo no pueda llevar el paquete
     assert.notThat(paquete.puedeSerEntregadoPor(neo))
 }
+//TESTS PARTE 2
+ test "contratar a un mensajero" {
+        assert.equals(0, mensajeria.mensajeros().size())
+        mensajeria.contratar(neo)
+        assert.equals(1, mensajeria.mensajeros().size())
+    }
+test "despedir a un mensajero" {
+        mensajeria.contratar(neo)
+        assert.equals(1, mensajeria.mensajeros().size())
+        mensajeria.despedir(neo)
+        assert.equals(0, mensajeria.mensajeros().size())
+    }
 
+    test "despedir a todos los mensajeros" {
+        self.contratarTodos()
+        assert.equals(3, mensajeria.mensajeros().size())
+        mensajeria.despedirTodos()
+        assert.equals(0, mensajeria.mensajeros().size())
+    }
+
+    test "analizar si la mensajeria es grande" {
+        self.contratarTodos()
+        assert.that(mensajeria.mensajeriaGrande())
+    }
+
+    test "consultar si el paquete puede ser entregado por el primer empleado" {
+		chuck.transporte(bicicleta)
+		paquete.pagar()
+		mensajeria.contratar(chuck)
+		assert.that(mensajeria.puedePrimerEmpleado(paquete))
+    }
+
+    test "saber el peso del último mensajero de la empresa" {
+		mensajeria.contratar(chuck)
+		assert.equals(1900, mensajeria.pesoDelUltimoEmpleado())
+
+		mensajeria.contratar(neo)
+		assert.equals(0, mensajeria.pesoDelUltimoEmpleado())
+    }
 }
