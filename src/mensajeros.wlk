@@ -100,7 +100,7 @@ object matrix {
 object paquete {
 	var pago = false
 	var destino = brooklyn
-	var precio = 50
+	const precio = 50
 
 	method pagar() {
 		pago = true
