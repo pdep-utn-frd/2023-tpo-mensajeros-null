@@ -24,10 +24,10 @@ object mensajeria {
     }
    
     method candidatosPara(mensaje) {
-      return mensajeros.find({x => mensaje.puedeSerEntregadoPor(x)})
+      return mensajeros.filter({x => mensaje.puedeSerEntregadoPor(x)})
     }
     method paqueteFacil(mensaje) {
-        mensajeros.all({x => mensaje.puedeSerEntregadoPor(x)})
+       return mensajeros.all({x => mensaje.puedeSerEntregadoPor(x)})
     }
   	method mensajeriaGrande(){
   		return mensajeros.size()>2
