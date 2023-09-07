@@ -4,6 +4,8 @@ object mensajeria {
 
     const mensajeros = new Set()
     var lista = []
+    var paquetesPendientes = []
+    var facturacion = 0
 
 	method contratar(persona) {
         mensajeros.add(persona)
@@ -22,7 +24,7 @@ object mensajeria {
     }
    
     method candidatosPara(mensaje) {
-        mensajeros.find({x => mensaje.puedeSerEntregadoPor(x)})
+      return mensajeros.find({x => mensaje.puedeSerEntregadoPor(x)})
     }
     method paqueteFacil(mensaje) {
         mensajeros.all({x => mensaje.puedeSerEntregadoPor(x)})
@@ -38,7 +40,46 @@ object mensajeria {
   		lista=mensajeros.asList()
   		return lista.last().peso()
   	}
+  	
+  	method puedeSerEnviado(mensaje){
+  		lista=mensajeros.filter({x => mensaje.puedeSerEntregadoPor(x)}).asList()
+  		return lista.size()>0 and mensaje.estaPago()
+  	}
+  	
+  	method enviarPaquete(mensaje){ //si mensaje es paquetonViajero primero inicializar con su method precio 
+  		if (self.puedeSerEnviado(mensaje)) {
+  			facturacion = facturacion + mensaje.precio()}
+  		else{ paquetesPendientes.add(mensaje)
+  		} 
+  	}
+  	
+  	method paquetesPendientes(){
+  		return paquetesPendientes
+  	}
+  	
+  	method agregarPaquete(mensaje){
+  		paquetesPendientes.add(mensaje)
+  	}
+  	
+  	method facturacion(){
+  		return facturacion
+  	}
+  	
+  	
+  	method enviarTodos(){
+  		lista=paquetesPendientes.filter({x => self.puedeSerEnviado(x)})
+  		lista.forEach({x => self.enviarPaquete(x)})
+  		paquetesPendientes=paquetesPendientes.filter({x => !self.puedeSerEnviado(x)})
+  	  
+  	}
+  		
+  	method enviarMasCaro(){
+  		self.enviarPaquete(paquetesPendientes.max({x=>x.precio()}))
+  		paquetesPendientes.remove(paquetesPendientes.max({x=>x.precio()}))
+  		
+  	}
+  	
     method tieneSobrepeso() {
-
+		return mensajeros.sum({x => x.peso()}) > 500
     } 
 }

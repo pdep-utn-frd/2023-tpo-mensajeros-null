@@ -91,6 +91,10 @@ object paquete {
 	method pagar() {
 		pago = true
 	}
+	
+	method precio(){
+		return precio
+	}
 
 	method estaPago() {
 		return pago
@@ -107,10 +111,15 @@ object paquete {
 object paquetito {
 	var pago = true
 	var destino = brooklyn
+	var precio = 0
 
 
 	method estaPago() {
 		return pago
+	}
+
+	method precio(){
+		return precio
 	}
 
 	method destino(lugar) {
@@ -124,26 +133,32 @@ object paquetito {
 
 object paquetonViajero {
 	var pago = false
+	var pagando = false
 	var destino = []
-	var precio = 50
+	var precio = 0 // si intento inicializar directo destino.size()*50, 
+	               //no funciona siempre da 0. Usar method precio() para eso
 
 	method pagar(cantidad) {
 		precio = precio - cantidad
+		pagando = true
 	}
 	
-	method precio() {
-		return precio
-}
 	method estaPago() {
 		return precio <= 0
 	}
-	method precioTotal(){
-		precio = destino.size() * 50
-		return precio
+	
+	method precio(){
+		if (not pagando){
+			precio = destino.size() * 50
+			return precio} 
+		else {
+			return precio
+		}
 	}
 	method destino(lugar) {
 		destino.add(lugar)
 	}
+	
 
 	method puedeSerEntregadoPor(mensajero) {
 		return destino.all({x=>x.dejarPasar(mensajero)}) and self.estaPago()
