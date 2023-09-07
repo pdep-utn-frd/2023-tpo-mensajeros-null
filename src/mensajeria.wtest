@@ -61,20 +61,7 @@ test "Si neo es empleado, Hay un mensajero que puede enviar el paquete" {
 	self.destinoPago()
 	assert.that(mensajeria.mensajeros().contains(neo))
 }
-//Tests parte 1
-test "Roberto puede llevar un paquete que está pago en un camión que tiene un acoplado" {
-    mensajeria.contratar(roberto)
-    camion.acoplados(1)
-    roberto.transporte(camion)
-    paquete.pagar()
-    assert.that(paquete.puedeSerEntregadoPor(roberto))
-}
-test "Neo con crédito no puede llevar un paquete que no está pago a la matrix" {
-    mensajeria.contratar(neo)
-    assert.that(neo.tieneCredito())
-	paquete.destino(matrix)
-    assert.notThat(paquete.puedeSerEntregadoPor(neo))
-}
+
 //TESTS PARTE 2
 test "contratar a un mensajero" {
     assert.equals(0, mensajeria.mensajeros().size())

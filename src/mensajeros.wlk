@@ -183,7 +183,7 @@ object paquetonViajero {
 object carta {
 	var pago = false
 	var destino = matrix
-	var precio = 3,14159265
+	var precio = 3.14159265
 
 	method pagar() {
 		pago = true
