@@ -50,6 +50,20 @@ object chuck {
 	}
 }
 
+// nuevo mensajero
+object iron_man {
+	var peso = 0 // igual que neo, ya que tambien vuela
+
+	// no hay transporte, usa su traje
+	
+	method peso() = peso
+
+	// es millonario y llama desde el traje asi que siempre tiene credito
+	method tieneCredito() {
+		return true  
+	}
+}
+
 object camion {
 	var acoplados = 2
 
@@ -162,5 +176,28 @@ object paquetonViajero {
 
 	method puedeSerEntregadoPor(mensajero) {
 		return destino.all({x=>x.dejarPasar(mensajero)}) and self.estaPago()
+	}
+}
+
+// nuevo paquete
+object carta {
+	var pago = false
+	var destino = matrix
+	var precio = 3,14159265
+
+	method pagar() {
+		pago = true
+	}
+
+	method precio() = precio
+
+	method estaPago() {
+		return pago
+	}
+
+	method destino() = destino
+
+	method puedeSerEntregadoPor(mensajero) {
+		return destino.dejarPasar(mensajero) and self.estaPago()
 	}
 }
