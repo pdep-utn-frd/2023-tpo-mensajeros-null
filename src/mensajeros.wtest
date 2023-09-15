@@ -1,2 +1,37 @@
 import mensajeros.*
 
+//Tests parte 1
+test "Roberto puede llevar un paquete que está pago en un camión que tiene un acoplado" {
+    camion.acoplados(1)
+    roberto.transporte(camion)
+    paquete.pagar()
+    assert.that(paquete.puedeSerEntregadoPor(roberto))
+}
+test "Neo con crédito no puede llevar un paquete que no está pago a la matrix" {
+    assert.that(neo.tieneCredito())
+	paquete.destino(matrix)
+    assert.notThat(paquete.puedeSerEntregadoPor(neo))
+}
+
+test "neo va alternando entre tener credito y llamar"{
+	assert.that(neo.tieneCredito())
+	neo.llamar()
+	assert.notThat(neo.tieneCredito())
+}
+
+test "el peso de chuck con 2 acoplados es de 1900"{
+	camion.acoplados(2)
+	chuck.transporte(camion)
+	assert.equals(1900, chuck.peso())	
+}
+
+test "iron man es millonario y siempre tiene credito"{
+	assert.that(iron_man.tieneCredito())
+	assert.that(iron_man.tieneCredito())
+	assert.that(iron_man.tieneCredito())
+	assert.that(iron_man.tieneCredito())
+}
+
+test "roberto no puede ir a la matrix porque no tiene credito"{
+	assert.notThat(matrix.dejarPasar(roberto))
+}

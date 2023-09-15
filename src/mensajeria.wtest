@@ -15,7 +15,7 @@ method destinoPago() {
 }
 
 test "la mensajeria no tiene mensajeros"{
-	assert.equals(mensajeria.mensajeros(), [])
+	assert.equals(mensajeria.mensajeros().size(), 0)
 }
 test "la mensajeria no tiene a neo"{
 	assert.notThat(mensajeria.mensajeros().contains(neo))
@@ -26,10 +26,17 @@ test "La mensajeria tiene a neo como empleado si lo agregarmos" {
 }
 
 test "La mensajeria devuelve a neo y chuck si le pido los cantidatos posibles"{
+	chuck.transporte(bicicleta)
 	self.contratarTodos()
 	self.destinoPago()
+	var mensajeros = new Set()
+	mensajeros.add(chuck)
+	mensajeros.add(neo)
+	paquete.pagar()
 	assert.equals(mensajeros, mensajeria.candidatosPara(paquete))
 }
+
+
 
 test "La mensajeria tiene Sobrepeso si contrata a todos"{
 	self.contratarTodos()
@@ -41,7 +48,7 @@ test "No todos los empleados de la mensajeria pueden entregar el paquete"{
 	mensajeria.contratar(neo)
 	mensajeria.contratar(chuck)
 	self.destinoPago()
-	assert.that(mensajeria.paqueteFacil(paquete))
+	assert.notThat(mensajeria.paqueteFacil(paquete))
 }
 
 test "La mensajeria tiene sobrepeso si contrata a chuck norris "{
@@ -53,6 +60,99 @@ test "Si neo es empleado, Hay un mensajero que puede enviar el paquete" {
 	mensajeria.contratar(neo)
 	self.destinoPago()
 	assert.that(mensajeria.mensajeros().contains(neo))
+}
+
+//TESTS PARTE 2
+test "contratar a un mensajero" {
+    assert.equals(0, mensajeria.mensajeros().size())
+    mensajeria.contratar(neo)
+    assert.equals(1, mensajeria.mensajeros().size())
+}
+test "despedir a un mensajero" {
+    mensajeria.contratar(neo)
+    assert.equals(1, mensajeria.mensajeros().size())
+    mensajeria.despedir(neo)
+    assert.equals(0, mensajeria.mensajeros().size())
+}
+
+test "despedir a todos los mensajeros" {
+    self.contratarTodos()
+    assert.equals(3, mensajeria.mensajeros().size())
+    mensajeria.despedirTodos()
+    assert.equals(0, mensajeria.mensajeros().size())
+}
+
+test "analizar si la mensajeria es grande" {
+    assert.notThat(mensajeria.mensajeriaGrande())
+    self.contratarTodos()
+    assert.that(mensajeria.mensajeriaGrande())
+}
+
+test "consultar si el paquete puede ser entregado por el primer empleado" {
+	chuck.transporte(bicicleta)
+	paquete.pagar()
+	mensajeria.contratar(chuck)
+	assert.that(mensajeria.puedePrimerEmpleado(paquete))
+}
+
+test "saber el peso del último mensajero de la empresa" {
+	mensajeria.contratar(chuck)
+	assert.equals(1900, mensajeria.pesoDelUltimoEmpleado())
+
+	mensajeria.contratar(neo)
+	assert.equals(0, mensajeria.pesoDelUltimoEmpleado())
+}
+
+//TEST PARTE 3
+
+ test "un paquete NO puede ser entregado por chuck  a brooklyn por su peso" {  
+	chuck.transporte(camion)
+	paquete.pagar()
+	mensajeria.contratar(chuck)
+	assert.notThat(mensajeria.puedeSerEnviado(paquete))
+}
+
+test "obtener todos los mensajeros que pueden llevar un paquete " {
+	paquete.pagar()
+	mensajeria.contratar(iron_man)
+	mensajeria.contratar(neo)
+
+    assert.equals(2, mensajeria.candidatosPara(paquete).size())
+}
+
+test "saber si una mensajería tiene sobrepeso debido al empleado chuck" {
+    mensajeria.contratar(neo)
+    assert.notThat(mensajeria.tieneSobrepeso())
+
+    mensajeria.contratar(chuck)
+    assert.that(mensajeria.tieneSobrepeso())
+}
+
+test "hacer que la empresa de mensajería envíe un paquetito" {    
+
+    assert.equals(0, mensajeria.facturacion())
+    mensajeria.enviarPaquete(paquetito)
+    assert.equals(paquetito.precio(), mensajeria.facturacion())
+}
+
+test "conocer la facturación de la empresa" {
+self.contratarTodos()
+    assert.equals(0, mensajeria.facturacion())
+    paquete.pagar()
+    mensajeria.enviarPaquete(paquete)
+    assert.equals(50, mensajeria.facturacion())
+  
+}
+
+test "dado un conjunto de paquetes, enviarlos a todos" {
+  self.contratarTodos()
+    assert.equals(0, mensajeria.facturacion())
+    paquete.pagar()
+    mensajeria.enviarPaquete(paquete)
+    assert.equals(50, mensajeria.facturacion())
+    paquete.pagar()
+    mensajeria.enviarPaquete(paquete)
+    assert.equals(100, mensajeria.facturacion())
 }
 
 }
